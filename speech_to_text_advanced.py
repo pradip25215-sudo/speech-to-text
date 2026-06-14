@@ -2,42 +2,7 @@
 =============================================================================
  SPEECH-TO-TEXT — ADVANCED MODULE (Level 4)
  Production-grade transcription pipeline + web demo
-=============================================================================
 
- This file is the ADVANCED extension of your speech_to_text_complete.py.
- Levels 1-3 taught the concepts. This file packages them like real software.
-
- WHAT YOU GET HERE:
- ──────────────────
-   1. AdvancedTranscriber class   → one clean object that does everything
-   2. Audio preprocessing         → mono, 16kHz resample, normalization
-   3. Word-level timestamps       → exact time of every single word
-   4. Confidence scores           → how sure the model is (per segment)
-   5. Long-audio handling         → 2-hour podcasts work fine
-   6. Speaker diarization         → "who spoke when" (Speaker 1 / Speaker 2)
-   7. Multi-format export         → .srt .vtt .json .csv .txt
-   8. Streamlit web app           → drag-drop a file, see the transcript
-
- WHY THIS MATTERS FOR YOUR PORTFOLIO:
- ────────────────────────────────────
- Anyone can call model.transcribe(). What separates a junior demo from a
- real engineering project is: clean class design, preprocessing, error
- handling, multiple output formats, and a usable interface. That's this file.
-
- SETUP:
- ──────
-   pip install faster-whisper        # fast ASR engine
-   pip install librosa soundfile     # audio loading + preprocessing
-   pip install pandas                # CSV export
-   pip install streamlit             # web app (optional)
-   pip install pyannote.audio        # speaker diarization (optional)
-   # ffmpeg required:  sudo apt install ffmpeg   (or brew install ffmpeg)
-
- RUN:
- ────
-   python speech_to_text_advanced.py            # CLI demo on a file
-   streamlit run speech_to_text_advanced.py     # launches the web app
-=============================================================================
 """
 
 import os
