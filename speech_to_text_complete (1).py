@@ -1,61 +1,17 @@
-"""
-=============================================================================
+
  COMPLETE SPEECH-TO-TEXT (AUDIO → TEXT) PROJECT
- From Zero to Production — Full Code with Explanation
-=============================================================================
 
- What is Speech-to-Text (ASR)?
- ─────────────────────────────
- ASR = Automatic Speech Recognition
- It takes audio (your voice, a podcast, a meeting) and converts it into
- written text. This is what powers:
-   - Siri, Alexa, Google Assistant
-   - YouTube auto-captions
-   - Meeting transcription tools (Otter.ai, etc.)
-
- How does it work internally?
- ────────────────────────────
- Audio File (.mp3/.wav)
-      ↓
- Load as waveform (array of numbers representing sound)
-      ↓
- Convert to Mel Spectrogram (a 2D "image" of the sound)
-      ↓
- Feed into Transformer model (encoder reads the image, decoder writes text)
-      ↓
- Output: Text transcription
-
- This file has 3 LEVELS:
-   Level 1 → Basic: Transcribe any audio file (3 lines of code)
-   Level 2 → Intermediate: Real-time microphone transcription
-   Level 3 → Advanced: Fine-tune Whisper on custom data
-
- SETUP (run these in terminal first):
-   pip install openai-whisper        # Core Whisper model
-   pip install faster-whisper        # 4x faster version
-   pip install sounddevice           # For microphone recording
-   pip install numpy                 # Number crunching
-   pip install scipy                 # Audio file saving
-   pip install torch                 # PyTorch (deep learning)
-   pip install transformers datasets # Hugging Face (for fine-tuning)
-
- Also install ffmpeg (required by Whisper):
-   Ubuntu:  sudo apt install ffmpeg
-   Mac:     brew install ffmpeg
-   Windows: choco install ffmpeg
-=============================================================================
 """
 
 import os
 import time
 
-# ═══════════════════════════════════════════════════════════════════════════
+
 # LEVEL 1: BASIC — Transcribe an Audio File
-# ═══════════════════════════════════════════════════════════════════════════
 # This is the simplest way. You give it an audio file, it gives you text.
 # Supports: mp3, wav, m4a, flac, ogg, webm
 # Supports: 99+ languages (English, Hindi, Spanish, etc.)
-# ═══════════════════════════════════════════════════════════════════════════
+
 
 def level_1_basic_transcription():
     """
@@ -162,12 +118,8 @@ def level_1b_record_test_audio():
     print("Now run: level_1_basic_transcription()")
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # LEVEL 2: INTERMEDIATE — Real-Time Microphone Transcription
-# ═══════════════════════════════════════════════════════════════════════════
-# This listens to your microphone continuously and transcribes in real-time.
-# Uses faster-whisper (4x faster than original Whisper).
-# ═══════════════════════════════════════════════════════════════════════════
+
 
 def level_2_realtime_transcription():
     """
@@ -248,13 +200,7 @@ def level_2_realtime_transcription():
         print("\n\nStopped. Goodbye!")
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # LEVEL 3: ADVANCED — Fine-Tune Whisper on Your Own Data
-# ═══════════════════════════════════════════════════════════════════════════
-# Train Whisper on YOUR specific audio data to make it more accurate for
-# your use case (e.g., Hindi audio, medical terms, domain-specific vocab).
-# Uses Hugging Face Transformers + Datasets.
-# ═══════════════════════════════════════════════════════════════════════════
 
 def level_3_finetune_whisper():
     """
@@ -309,9 +255,9 @@ def level_3_finetune_whisper():
         task="transcribe"  # "transcribe" or "translate" (to English)
     )
 
-    # ══════════════════════════════════════════════
+
     # STEP 2: Load Dataset
-    # ══════════════════════════════════════════════
+    
     # Mozilla Common Voice = free, open-source speech dataset
     # Available in 100+ languages including Hindi
     # Each sample has: audio file + text transcription
@@ -339,9 +285,9 @@ def level_3_finetune_whisper():
     print(f"Training samples: {len(dataset)}")
     print(f"Validation samples: {len(eval_dataset)}")
 
-    # ══════════════════════════════════════════════
+
     # STEP 3: Preprocess Data
-    # ══════════════════════════════════════════════
+   
     # Convert raw audio → mel spectrogram features
     # Convert text → token IDs
 
@@ -381,9 +327,8 @@ def level_3_finetune_whisper():
         remove_columns=eval_dataset.column_names
     )
 
-    # ══════════════════════════════════════════════
+ 
     # STEP 4: Data Collator
-    # ══════════════════════════════════════════════
     # Batches samples together and pads them to same length.
     # This is needed because audio clips have different lengths.
 
@@ -433,9 +378,9 @@ def level_3_finetune_whisper():
 
     data_collator = WhisperDataCollator(processor)
 
-    # ══════════════════════════════════════════════
+
     # STEP 5: Evaluation Metric
-    # ══════════════════════════════════════════════
+   
     # WER = Word Error Rate
     # Lower is better. 0% = perfect, 100% = everything wrong
     # WER = (Substitutions + Insertions + Deletions) / Total Words
@@ -464,9 +409,8 @@ def level_3_finetune_whisper():
         )
         return {"wer": wer}
 
-    # ══════════════════════════════════════════════
     # STEP 6: Training Configuration
-    # ══════════════════════════════════════════════
+  
 
     training_args = Seq2SeqTrainingArguments(
         output_dir="./whisper-hindi-finetuned",  # Save directory
@@ -486,10 +430,9 @@ def level_3_finetune_whisper():
         greater_is_better=False,                  # Lower WER = better
         report_to="none",                         # No wandb/mlflow
     )
-
-    # ══════════════════════════════════════════════
+    
     # STEP 7: Create Trainer and START Training
-    # ══════════════════════════════════════════════
+    
 
     trainer = Seq2SeqTrainer(
         model=model,
@@ -512,10 +455,9 @@ def level_3_finetune_whisper():
     print("=" * 50 + "\n")
 
     trainer.train()
-
-    # ══════════════════════════════════════════════
+════
     # STEP 8: Save the Fine-Tuned Model
-    # ══════════════════════════════════════════════
+    # 
 
     save_path = "./whisper-hindi-finetuned/final"
     model.save_pretrained(save_path)
@@ -567,9 +509,8 @@ def level_3b_use_finetuned_model():
     print(f"\nTranscription: {transcription}")
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # BONUS: Generate Subtitles (SRT file)
-# ═══════════════════════════════════════════════════════════════════════════
+
 
 def bonus_generate_subtitles():
     """
@@ -605,9 +546,7 @@ def bonus_generate_subtitles():
     print(f"Subtitles saved to: {output_file}")
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # BONUS: Translate Any Language Audio → English Text
-# ═══════════════════════════════════════════════════════════════════════════
 
 def bonus_translate_to_english():
     """
@@ -628,9 +567,9 @@ def bonus_translate_to_english():
     print(f"English translation: {result['text']}")
 
 
-# ═══════════════════════════════════════════════════════════════════════════
+
 # MAIN — Run any level
-# ═══════════════════════════════════════════════════════════════════════════
+
 
 if __name__ == "__main__":
     print("""
